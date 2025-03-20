@@ -21,24 +21,19 @@ const TicketDetailPage: React.FC = () => {
     const navigate = useNavigate();
     const ticketId = Number(id);
 
-    // Режим редагування
     const [editMode, setEditMode] = useState(false);
 
-    // Дані тікета
     const { data: ticketData, isLoading: isTicketLoading, error: ticketError } = useGetTicketByIdQuery(ticketId);
     const [updateTicket, { isLoading: isUpdating }] = useUpdateTicketMutation();
 
-    // Дані для dropdown
     const { data: ticketTypesData } = useGetTicketTypesQuery();
     const { data: modulesData } = useGetModulesQuery();
     const { data: statusesData } = useGetStatusesQuery();
     const { data: prioritiesData } = useGetPrioritiesQuery();
 
-    // Реплаї
     const { data: replies, refetch: refetchReplies } = useGetRepliesByTicketIdQuery(ticketId);
     const [createReply, { isLoading: isReplyCreating }] = useCreateReplyMutation();
 
-    // Локальний стейт для редагування тікета
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [moduleId, setModuleId] = useState<number>(0);
@@ -46,7 +41,6 @@ const TicketDetailPage: React.FC = () => {
     const [typeId, setTypeId] = useState<number>(0);
     const [statusId, setStatusId] = useState<number>(0);
 
-    // Локальний стейт для нового реплаю
     const [newReplyContent, setNewReplyContent] = useState('');
 
     useEffect(() => {
@@ -60,7 +54,6 @@ const TicketDetailPage: React.FC = () => {
         }
     }, [ticketData]);
 
-    // Керування сторінкою
     const handleClose = () => navigate('/tickets');
     const handleEdit = () => setEditMode(true);
     const handleCancel = () => {
@@ -94,7 +87,6 @@ const TicketDetailPage: React.FC = () => {
         }
     };
 
-    // Створення реплаю
     const handleCreateReply = async () => {
         if (!newReplyContent.trim()) return;
         try {
@@ -106,7 +98,6 @@ const TicketDetailPage: React.FC = () => {
         }
     };
 
-    // Перевірка завантаження dropdown
     const loadingDropdowns =
         editMode &&
         (!ticketTypesData || !modulesData || !statusesData || !prioritiesData);
